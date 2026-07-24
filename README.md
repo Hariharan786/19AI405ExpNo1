@@ -40,3 +40,61 @@
 <p>Treat unhealthy patients in each room. And check for the unhealthy patients in random room</p>
 <h3>STEP 5:</h3>
 <p>Measure the performance parameters: For each treatment performance incremented, for each movement performance decremented</p>
+<h3>Program</h3>
+
+```
+import random
+
+class HealthAgent:
+    def __init__(self):
+        self.current_room = "Ward 1"
+        self.score = 0
+
+    def take_action(self, hospital_env):
+        current_temp = hospital_env[self.current_room]["temp"]
+        
+        if current_temp > 98.5:
+            print(f"Patient in {self.current_room} has a fever ({current_temp:.1f}°F). Administering medication.")
+            self.score += 10
+            hospital_env[self.current_room]["temp"] = 98.5 
+        else:
+            print(f"Patient in {self.current_room} is healthy ({current_temp:.1f}°F). No action needed.")
+            
+        if self.current_room == "Ward 1":
+            self.current_room = "Ward 2"
+        else:
+            self.current_room = "Ward 1"
+            
+        self.score -= 1
+        print(f"Agent navigated to {self.current_room}. Current Score: {self.score}")
+
+def main():
+    hospital = {
+        "Ward 1": {"temp": random.uniform(97.0, 102.0)},
+        "Ward 2": {"temp": random.uniform(97.0, 102.0)}
+    }
+    
+    nurse_bot = HealthAgent()
+    
+    print("--- Initiating Healthcare Simulation ---")
+    
+    for cycle in range(5):
+        print(f"\n--- Cycle {cycle + 1} ---")
+        nurse_bot.take_action(hospital)
+        
+        random_ward = random.choice(["Ward 1", "Ward 2"])
+        hospital[random_ward]["temp"] = random.uniform(99.0, 103.0)
+
+    print("\n--- Simulation Concluded ---")
+
+if __name__ == "__main__":
+    main()
+
+```
+<h3>Output</h3>
+
+<img width="918" height="495" alt="image" src="https://github.com/user-attachments/assets/4a45b481-4166-4bc3-95d8-bf764cffddaf" />
+
+<h3>Result</h3>
+
+The PEAS description for the given AI problem is finded and successfully developed an AI agent.
